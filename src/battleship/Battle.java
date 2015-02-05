@@ -5,7 +5,7 @@ import java.util.Properties;
 
 
 import print.color.Ansi.*;
-import print.color.ColoredPrinterNIX;
+import print.color.ColoredPrinter;
 import print.color.ColoredPrinterWIN;
 
 
@@ -400,7 +400,7 @@ public class Battle {
 
     private static void printTheField()
     {
-        ColoredPrinterWIN cp = new ColoredPrinterWIN.Builder(1, false)
+        ColoredPrinter cp = new ColoredPrinter.Builder(1, false)
                 .foreground(FColor.NONE).background(BColor.NONE).build();   //setting format
 
         System.out.println("              Player                                             Computer");
@@ -410,25 +410,26 @@ public class Battle {
             System.out.print(String.format("%2.2s ", (char)(i + 65)));
             for (int j = 0; j < sizeOfField; j++)
             {
-                if (playerField[i][j] == Battle.hit) {
-                    cp.print("[", Attribute.NONE, FColor.BLUE, BColor.BLUE);
-                    cp.print(playerField[i][j], Attribute.NONE, FColor.RED, BColor.BLUE);
-                    cp.print("]", Attribute.NONE, FColor.BLUE, BColor.BLUE);
-                } else if (playerField[i][j] == Battle.ship) {
-                    cp.print("[", Attribute.NONE, FColor.BLUE, BColor.BLUE);
-                    cp.print(playerField[i][j], Attribute.NONE, FColor.BLUE, BColor.BLUE);
-                    cp.print("]", Attribute.NONE, FColor.BLUE, BColor.BLUE);
+                char cross = playerField[i][j];
+                if (cross == Battle.hit) {
+                    cp.print('[', Attribute.NONE, FColor.BLUE, BColor.BLUE);
+                    cp.print(cross, Attribute.NONE, FColor.RED, BColor.BLUE);
+                    cp.print(']', Attribute.NONE, FColor.BLUE, BColor.BLUE);
+                } else if (cross == Battle.ship) {
+                    cp.print('[', Attribute.NONE, FColor.BLUE, BColor.BLUE);
+                    cp.print(cross, Attribute.NONE, FColor.BLUE, BColor.BLUE);
+                    cp.print(']', Attribute.NONE, FColor.BLUE, BColor.BLUE);
                 } else {
-                    cp.print("[", Attribute.NONE, FColor.BLUE, BColor.WHITE);
-                    cp.print(playerField[i][j], Attribute.NONE, FColor.GREEN, BColor.WHITE);
-                    cp.print("]", Attribute.NONE, FColor.BLUE, BColor.WHITE);
+                    cp.print('[', Attribute.NONE, FColor.BLUE, BColor.WHITE);
+                    cp.print(cross, Attribute.NONE, FColor.GREEN, BColor.WHITE);
+                    cp.print(']', Attribute.NONE, FColor.BLUE, BColor.WHITE);
                 }
                 cp.clear();
             }
 
             String ship = i==0? "Battleship: " : i==1? "Cruiser: " : i==2? "Destroyer: " : i==3? "Submarine: " : " ";
-            String countOfPlayersShips = String.valueOf((i==0? PlayersShips.countOfBattleShip : i==1? PlayersShips.countOfCruiser : i==2?
-                    PlayersShips.countOfDestroyer : i==3? PlayersShips.countOfSubmarine : ""));
+            String countOfPlayersShips = String.valueOf(i==0? PlayersShips.countOfBattleShip : i==1? PlayersShips.countOfCruiser : i==2?
+                    PlayersShips.countOfDestroyer : i==3? PlayersShips.countOfSubmarine : "");
             String playersShips = String.format("  %-12s%1s   ", ship, countOfPlayersShips);
             System.out.print(playersShips);
             System.out.print(String.format("%2.2s ", (char)(i + 65)));
@@ -436,21 +437,20 @@ public class Battle {
             {
                 char cross = computerField[i][j] == Battle.ship ? ' ': computerField[i][j];
                 if (cross == Battle.hit) {
-                    cp.print("[", Attribute.NONE, FColor.BLUE, BColor.BLUE);
+                    cp.print('[', Attribute.NONE, FColor.BLUE, BColor.BLUE);
                     cp.print(cross, Attribute.NONE, FColor.RED, BColor.BLUE);
-                    cp.print("]", Attribute.NONE, FColor.BLUE, BColor.BLUE);
+                    cp.print(']', Attribute.NONE, FColor.BLUE, BColor.BLUE);
                 } else {
-                    cp.print("[", Attribute.NONE, FColor.BLUE, BColor.WHITE);
+                    cp.print('[', Attribute.NONE, FColor.BLUE, BColor.WHITE);
                     cp.print(cross, Attribute.NONE, FColor.GREEN, BColor.WHITE);
-                    cp.print("]", Attribute.NONE, FColor.BLUE, BColor.WHITE);
+                    cp.print(']', Attribute.NONE, FColor.BLUE, BColor.WHITE);
                 }
             }
             cp.clear();
-            String countOfComputersShips = String.valueOf((i==0? ComputersShips.countOfBattleShip : i==1? ComputersShips.countOfCruiser : i==2?
-                    ComputersShips.countOfDestroyer : i==3? ComputersShips.countOfSubmarine : ""));
+            String countOfComputersShips = String.valueOf(i==0? ComputersShips.countOfBattleShip : i==1? ComputersShips.countOfCruiser : i==2?
+                    ComputersShips.countOfDestroyer : i==3? ComputersShips.countOfSubmarine : "");
             String computersShips = String.format("  %-12s%1s", ship, countOfComputersShips);
-            System.out.print(computersShips);
-            System.out.println();
+            System.out.println(computersShips);
         }
     }
 }
